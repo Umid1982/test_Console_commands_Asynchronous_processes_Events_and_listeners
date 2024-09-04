@@ -1,66 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Проект Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Описание проекта
 
-## About Laravel
+Этот проект демонстрирует использование принципов SOLID, работу с консольными командами, асинхронные процессы и события в Laravel. В проекте реализованы следующие функции:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Импорт пользователей из CSV файла.
+- Отправка email уведомлений пользователям с определенной ролью.
+- Обработка загрузки и хранения изображений.
+- Обработка платежей через различные платежные системы.
+- Система событий для уведомления пользователей после регистрации.
+- Написанно тесты для проверки корректности работы команд и платёжной системы.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Установка
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Клонируйте репозиторий:
 
-## Learning Laravel
+    ```bash
+    git clone https://github.com/your-repository.git
+    ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. Перейдите в директорию проекта:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    ```bash
+    cd your-project-directory
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Установите зависимости:
 
-## Laravel Sponsors
+    ```bash
+    composer install
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Скопируйте файл `.env.example` в `.env`:
 
-### Premium Partners
+    ```bash
+    cp .env.example .env
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5. Настройте ваше окружение в `.env`, добавив параметры для базы данных и почты:
 
-## Contributing
+## Используемые технологии
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Очереди
 
-## Code of Conduct
+В проекте используется система очередей Laravel для асинхронной обработки задач, таких как отправка email уведомлений.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Конфигурация очередей:**
 
-## Security Vulnerabilities
+Для локальной разработки и тестирования используется `database` драйвер очередей вместо `redis`. Это позволяет хранить задачи в таблице `jobs` в базе данных, что упрощает настройку и не требует дополнительного сервера Redis.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Настройки:**
 
-## License
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    MAIL_MAILER=smtp
+    MAIL_HOST=sandbox.smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=46a697787b1cfa
+    MAIL_PASSWORD=dd58f59dbe8ed2
+
+
+    QUEUE_CONNECTION=database
+
+    ```
+
+6. Выполните миграции:
+
+    ```bash
+    php artisan migrate
+    ```
+
+7. Сиды данные (если необходимо):
+
+    ```bash
+    php artisan db:seed
+    ```
+
+## Запуск сервера и обработки очередей
+
+- Для запуска локального сервера используйте:
+
+    ```bash
+    php artisan serve
+    ```
+
+- Для обработки очередей используйте:
+
+    ```bash
+    php artisan queue:work
+    ```
+
+## Роуты API
+
+## Экспортированные запросы Postman
+
+Вы можете загрузить коллекцию запросов Postman из [postman_collection.json](app/postman_collection.json).
+
+### Обработка платежей
+
+- **URL:** `/v1/process/payment`
+- **Метод:** POST
+- **Контроллер:** `PaymentController@processPayment`
+
+### Загрузка изображений
+
+- **URL:** `/v1/user/upload`
+- **Метод:** POST
+- **Контроллер:** `UserController`
+
+### Регистрация пользователя
+
+- **URL:** `/v1/register`
+- **Метод:** POST
+- **Контроллер:** `AuthController`
+
+## Консольные команды
+
+### Импорт пользователей из CSV
+
+**Команда:** `php artisan users:import`
+
+Эта команда импортирует пользователей из CSV файла. Файл должен содержать следующие колонки: `name`, `email`, `password`.
+
+### Отправка email пользователям с определенной ролью
+
+**Команда:** `php artisan users:notify`
+
+Эта команда отправляет email всем пользователям с указанной ролью (по умолчанию "admin").
+
+## Асинхронные процессы
+
+Проект реализует систему обработки загрузки и хранения изображений. При загрузке изображения оно обрабатывается (например, изменяется размер) и сохраняется в облаке.
+
+## События и слушатели
+
+Проект включает систему событий, которая отправляет уведомление пользователю по электронной почте после регистрации.
+
+## Принципы SOLID
+
+Проект демонстрирует применение принципов SOLID на примере класса для обработки платежей. Система поддерживает различные платежные провайдеры (например, PayPal и Stripe) и позволяет легко менять логику обработки платежей без изменения основного кода.
+
+## Тестирование
+
+### Тестирование консольной команды `users:notify`
+
+**Команда:** `php artisan test`
+
+```php
+use Illuminate\Support\Facades\Queue;
+use Tests\TestCase;
+use App\Models\User;
+use App\Jobs\SendUserNotificationEmail;
+
+class NotifyUsersCommandTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function it_can_queue_emails_for_users_with_specific_role()
+    {
+        // Создаем пользователя с ролью "admin"
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        // Используем mock для очереди
+        Queue::fake();
+
+        // Запуск команды и проверка, что задача поставлена в очередь
+        $this->artisan('users:notify')
+            ->assertExitCode(0);
+
+        // Проверяем, что задачи были добавлены в очередь
+        Queue::assertPushed(SendUserNotificationEmail::class);
+
+        // Опционально: можно проверить количество задач в очереди
+        Queue::assertPushed(SendUserNotificationEmail::class, function ($job) use ($admin) {
+            return $job->getUser()->id === $admin->id;
+        });
+    }
+}
+Тестирование сервиса обработки платежей
+php
+
+Копировать код
+use Tests\TestCase;
+use App\Services\PaymentService;
+use App\PaymentProcessors\PayPalProcessor;
+
+class PaymentServiceTest extends TestCase
+{
+    /** @test */
+    public function testPaymentProcessingWithPayPal()
+    {
+        $paymentService = new PaymentService(new PayPalProcessor());
+        $this->assertTrue($paymentService->process(100.00));
+    }
+}
+Лицензия
+Этот проект лицензирован под MIT License.
