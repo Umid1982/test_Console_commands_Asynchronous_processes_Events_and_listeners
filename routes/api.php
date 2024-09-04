@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->group(function () {
+    Route::post('/process/payment', [PaymentController::class, 'processPayment']); // Маршрут для обработки платежей
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/user/upload', UserController::class);
     });
