@@ -2,6 +2,8 @@
 
 namespace App\Services\Payment;
 
+use App\DTOs\PaymentDTO;
+
 class PaymentService
 {
     private $processor;
@@ -11,8 +13,9 @@ class PaymentService
         $this->processor = $processor;
     }
 
-    public function process(float $amount): bool
+
+    public function process(PaymentDTO $paymentDTO): bool
     {
-        return $this->processor->processPayment($amount);
+        return $this->processor->processPayment((float)$paymentDTO);
     }
 }

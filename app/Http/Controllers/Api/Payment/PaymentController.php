@@ -15,7 +15,7 @@ class PaymentController extends Controller
 
     public function processPayment(ProcessPaymentRequest $request)
     {
-        if ($this->paymentService->process($request->validated())) {
+        if ($this->paymentService->process($request->toDTO())) {
             return response()->json(['message' => 'Payment processed successfully']);
         }
 

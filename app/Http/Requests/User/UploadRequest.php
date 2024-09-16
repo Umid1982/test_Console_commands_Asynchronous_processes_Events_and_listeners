@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\DTOs\UploadDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UploadRequest extends FormRequest
@@ -24,5 +25,12 @@ class UploadRequest extends FormRequest
         return [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
+    }
+
+    public function toDto(): UploadDTO
+    {
+        return new UploadDTO(
+            image: $this->file('image')
+        );
     }
 }

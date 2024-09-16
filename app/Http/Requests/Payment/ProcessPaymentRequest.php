@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Payment;
 
+use App\DTOs\PaymentDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProcessPaymentRequest extends FormRequest
@@ -25,9 +26,11 @@ class ProcessPaymentRequest extends FormRequest
             'amount' => 'required|numeric|min:1',
         ];
     }
-    // Дополнительный метод
-    public function getAmount()
+
+    public function toDTO(): PaymentDTO
     {
-        return $this->input('amount');
+        return new PaymentDTO(
+            $this->get('amount')
+        );
     }
 }
