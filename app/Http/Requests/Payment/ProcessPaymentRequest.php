@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Payment;
 
-use App\DTOs\UserDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class ProcessPaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,18 +22,12 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:2|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|max:255|confirmed',
+            'amount' => 'required|numeric|min:1',
         ];
     }
-
-    public function toDto(): UserDTO
+    // Дополнительный метод
+    public function getAmount()
     {
-        return new UserDTO(
-            $this->get('name'),
-            $this->get('email'),
-            $this->get('password')
-        );
+        return $this->input('amount');
     }
 }
