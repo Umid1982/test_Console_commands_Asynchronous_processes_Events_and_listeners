@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function __invoke(UploadRequest $uploadRequest)
     {
-        $data = $this->imageService->upload($uploadRequest->user(), $uploadRequest->validated());
+        $data = $this->imageService->upload($uploadRequest->user(), $uploadRequest->toDto());
 
         return response([
             'data' => GalleryResource::make($data),
