@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Payment\ProcessPaymentRequest;
 use App\Services\Payment\PaymentService;
 use Illuminate\Http\Request;
 
@@ -12,11 +13,9 @@ class PaymentController extends Controller
     {
     }
 
-    public function processPayment(Request $request)
+    public function processPayment(ProcessPaymentRequest $request)
     {
-        $amount = $request->input('amount');
-
-        if ($this->paymentService->process($amount)) {
+        if ($this->paymentService->process($request->validated())) {
             return response()->json(['message' => 'Payment processed successfully']);
         }
 

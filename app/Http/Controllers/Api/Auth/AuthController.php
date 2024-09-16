@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Console\Constants\AuthResponseEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -14,12 +14,12 @@ class AuthController extends Controller
     {
     }
 
-    public function __invoke(RegisterRequest $registerRequest)
+    public function __invoke(RegisterRequest $request)
     {
-        $data = $this->authService->register($registerRequest->validated());
+        $data = $this->authService->register($request->toDto());
 
         return response([
-            'user' => $data['user'],
+            'user' => new UserResource($data['user']),
             'access_token' => $data['access_token'],
             'token_type' => 'Bearer',
             'message' => AuthResponseEnum::USER_REGISTERED,

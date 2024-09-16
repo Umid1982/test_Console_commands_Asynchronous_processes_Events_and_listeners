@@ -2,26 +2,27 @@
 
 namespace App\Services;
 
-use App\Events\NewUserRegister;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\DTOs\UserDTO;
+use App\Repositories\UserRepositoryInterface;
 
 class AuthService
 {
+    protected UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     /** @throws \Exception */
 
-    public function register($validate)
+    public function register(UserDTO $userDTO)
     {
-        $user = User::query()->create([
-            'name' => $validate['name'],
-            'email' => $validate['email'],
-            'password' => bcrypt($validate['password']),
-        ]);
+        $user = $this->userRepository->create($userDTO);
+
         $token = $user->createToken('auth_token')->plainTextToken;
-        event(new NewUserRegister($user->email,$user->name));
 
         return [
-            'user' => new UserResource($user),
+            'user' => $user,
             'access_token' => $token,
         ];
     }
